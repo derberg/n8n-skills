@@ -13,7 +13,7 @@
 
 ```bash
 /plugin marketplace add derberg/n8n-skills
-/plugin install n8n-skills
+/plugin install n8n-skills@derberg-n8n-skills
 ```
 
 This wires the skill, the hooks and the MCP server together.

@@ -13,7 +13,8 @@
 >   `N8N_MCP_TELEMETRY_DISABLED=true`.
 >
 > **Install this fork:** `/plugin marketplace add derberg/n8n-skills` then
-> `/plugin install n8n-skills` — and `/plugin uninstall n8n-skills` to remove it.
+> `/plugin install n8n-skills@derberg-n8n-skills` — and
+> `/plugin uninstall n8n-skills@derberg-n8n-skills` to remove it.
 >
 > Upstream owns the n8n expertise and deserves the credit for it. See
 > [CHANGELOG.md](CHANGELOG.md) for detail.
@@ -95,7 +96,7 @@ your context has been reset.
 
 ```bash
 /plugin marketplace add derberg/n8n-skills
-/plugin install n8n-skills
+/plugin install n8n-skills@derberg-n8n-skills
 ```
 
 Or clone and load it directly:
