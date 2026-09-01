@@ -22,6 +22,35 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![n8n-mcp](https://img.shields.io/badge/n8n--mcp-compatible-green.svg)](https://github.com/czlonkowski/n8n-mcp)
 
+## Install
+
+In Claude Code:
+
+```
+/plugin marketplace add derberg/n8n-skills
+/plugin install n8n-skills
+```
+
+To remove it: `/plugin uninstall n8n-skills`
+
+<details>
+<summary>From your shell instead</summary>
+
+```bash
+claude plugin marketplace add derberg/n8n-skills
+claude plugin install n8n-skills
+claude plugin uninstall n8n-skills   # to remove
+```
+
+Both steps are required — `claude plugin install derberg/n8n-skills` fails with
+*"not found in any configured marketplace"*, because `install` resolves names from
+marketplaces you have already added. It installs as `n8n-skills@n8n-skills`.
+
+</details>
+
+Then set `N8N_API_URL` and `N8N_API_KEY` if you want the workflow-management tools — see
+[the MCP server](#the-mcp-server).
+
 ---
 
 ## What is this?
@@ -90,12 +119,9 @@ your context has been reset.
 
 ### Claude Code
 
-```bash
-/plugin marketplace add derberg/n8n-skills
-/plugin install n8n-skills
-```
+See [Install](#install) above for the two commands.
 
-Or clone and load it directly:
+To try it without installing, clone and load it for one session:
 
 ```bash
 git clone https://github.com/derberg/n8n-skills.git
