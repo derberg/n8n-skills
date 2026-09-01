@@ -1010,7 +1010,7 @@ average = mean([1, 2, 3, 4, 5])
 - Use n8n nodes for operations requiring external libraries
 
 **See Also**:
-- [SKILL.md](SKILL.md) - Python Code overview
+- [SKILL.md](../../../workflow-code.md) - Python Code overview
 - [DATA_ACCESS.md](DATA_ACCESS.md) - Data access patterns
 - [COMMON_PATTERNS.md](COMMON_PATTERNS.md) - Production patterns
 - [ERROR_PATTERNS.md](ERROR_PATTERNS.md) - Avoid common mistakes

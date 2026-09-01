@@ -1071,7 +1071,7 @@ Time-based workflows - 28% have schedule triggers
 5. Deploy when valid
 
 **Related Files**:
-- **[SKILL.md](SKILL.md)** - Configuration workflow and philosophy
+- **[SKILL.md](../../workflow-nodes.md)** - Configuration workflow and philosophy
 - **[DEPENDENCIES.md](DEPENDENCIES.md)** - Property dependency rules
 
 ---

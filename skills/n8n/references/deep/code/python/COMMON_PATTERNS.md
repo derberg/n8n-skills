@@ -911,7 +911,7 @@ else:
 - Code node is for data transformation, not API calls
 
 **See Also**:
-- [SKILL.md](SKILL.md) - Python Code overview
+- [SKILL.md](../../../workflow-code.md) - Python Code overview
 - [DATA_ACCESS.md](DATA_ACCESS.md) - Data access patterns
 - [STANDARD_LIBRARY.md](STANDARD_LIBRARY.md) - Available modules
 - [ERROR_PATTERNS.md](ERROR_PATTERNS.md) - Avoid common mistakes

@@ -1281,5 +1281,5 @@ update → update → update → ... (56s avg between edits)
 - `n8n_update_full_workflow` - Full workflow replacement
 
 **Related**:
-- [SEARCH_GUIDE.md](SEARCH_GUIDE.md) - Find nodes to add
-- [VALIDATION_GUIDE.md](VALIDATION_GUIDE.md) - Validate workflows
+- [SEARCH_GUIDE.md](../nodes/SEARCH_GUIDE.md) - Find nodes to add
+- [VALIDATION_GUIDE.md](../validate/VALIDATION_GUIDE.md) - Validate workflows

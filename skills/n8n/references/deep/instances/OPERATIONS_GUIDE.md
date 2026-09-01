@@ -70,7 +70,7 @@ n8n_deploy_template({
 
 > **Two surfaces, don't confuse them:**
 > - **`n8n_manage_datatable` (below)** — MCP tool for managing tables, rows and columns from *outside* a workflow (e.g. creating tables during workflow scaffolding, seeding data, or inspecting state from Claude). Covered here.
-> - **`nodes-base.dataTable` node** — the in-workflow node you drop into a workflow to read/write rows *during execution*. For its parameter shapes, operation values, filter syntax, and gotchas (e.g. the `deleteRows` reserved-word workaround, the `id isNotEmpty` trick for "all rows"), see [workflow-nodes → OPERATION_PATTERNS.md → Storage Nodes → Data Table](../workflow-nodes/OPERATION_PATTERNS.md#data-table-nodes-basedatatable).
+> - **`nodes-base.dataTable` node** — the in-workflow node you drop into a workflow to read/write rows *during execution*. For its parameter shapes, operation values, filter syntax, and gotchas (e.g. the `deleteRows` reserved-word workaround, the `id isNotEmpty` trick for "all rows"), see [workflow-nodes → OPERATION_PATTERNS.md → Storage Nodes → Data Table](../nodes/OPERATION_PATTERNS.md#data-table-nodes-basedatatable).
 >
 > Rule of thumb: use the MCP tool to set up a table once and the workflow node to read/write rows on every execution.
 
@@ -213,6 +213,6 @@ n8n_health_check({mode: "diagnostic"})
 
 ## Related
 
-- [SEARCH_GUIDE.md](SEARCH_GUIDE.md) - Node discovery
-- [VALIDATION_GUIDE.md](VALIDATION_GUIDE.md) - Configuration validation
+- [SEARCH_GUIDE.md](../nodes/SEARCH_GUIDE.md) - Node discovery
+- [VALIDATION_GUIDE.md](../validate/VALIDATION_GUIDE.md) - Configuration validation
 - [WORKFLOW_GUIDE.md](WORKFLOW_GUIDE.md) - Workflow management (incl. credentials, audit, generation)

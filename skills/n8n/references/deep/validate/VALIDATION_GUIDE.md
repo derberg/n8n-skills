@@ -657,5 +657,5 @@ n8n_update_partial_workflow({
 ---
 
 **Related**:
-- [SEARCH_GUIDE.md](SEARCH_GUIDE.md) - Find nodes
-- [WORKFLOW_GUIDE.md](WORKFLOW_GUIDE.md) - Build workflows
+- [SEARCH_GUIDE.md](../nodes/SEARCH_GUIDE.md) - Find nodes
+- [WORKFLOW_GUIDE.md](../instances/WORKFLOW_GUIDE.md) - Build workflows

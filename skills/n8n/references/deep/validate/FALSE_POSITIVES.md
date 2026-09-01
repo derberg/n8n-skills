@@ -675,5 +675,5 @@ One precise caveat on template literals: they only evaluate **inside `{{ }}`**. 
 **Golden Rule**: If you accept an advisory, document WHY.
 
 **Related Files**:
-- **[SKILL.md](SKILL.md)** - Main validation guide
+- **[SKILL.md](../../workflow-validate.md)** - Main validation guide
 - **[ERROR_CATALOG.md](ERROR_CATALOG.md)** - Error types and fixes

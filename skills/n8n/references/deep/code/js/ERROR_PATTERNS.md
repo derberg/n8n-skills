@@ -852,6 +852,6 @@ console.log('Input structure:', JSON.stringify(items[0], null, 2));
 - Use browser console for debugging
 
 **See Also**:
-- [SKILL.md](SKILL.md) - Overview and best practices
+- [SKILL.md](../../../workflow-code.md) - Overview and best practices
 - [DATA_ACCESS.md](DATA_ACCESS.md) - Safe data access patterns
 - [COMMON_PATTERNS.md](COMMON_PATTERNS.md) - Working examples

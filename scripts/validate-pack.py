@@ -110,6 +110,18 @@ def check_reference_links(skill):
                 fail(f"{md.relative_to(ROOT)} points at missing {match}")
 
 
+def strip_code_fences(text):
+    """Drop fenced code blocks so example markdown is not treated as links."""
+    out, fenced = [], False
+    for line in text.splitlines():
+        if line.lstrip().startswith("```"):
+            fenced = not fenced
+            continue
+        if not fenced:
+            out.append(line)
+    return "\n".join(out)
+
+
 def check_relative_links(skill):
     """Every relative markdown link inside the skill must resolve to a file.
 
@@ -119,11 +131,17 @@ def check_relative_links(skill):
     """
     link = re.compile(r"\]\(([^)]+)\)")
     for md in sorted(skill.rglob("*.md")):
-        text = md.read_text(encoding="utf-8")
+        text = strip_code_fences(md.read_text(encoding="utf-8"))
         for target in set(link.findall(text)):
             target = target.split("#", 1)[0].strip()
             if not target or target.startswith(("http://", "https://",
                                                "mailto:", "#")):
+                continue
+            # Only validate path-shaped targets. Bare words like the `url` in
+            # a `![alt](url)` syntax illustration are prose, not links.
+            path_shaped = "/" in target or re.search(
+                r"\.(md|ya?ml|sh|json|example)$", target)
+            if not path_shaped:
                 continue
             resolved = (md.parent / target).resolve()
             if not resolved.exists():

@@ -1005,7 +1005,7 @@ info.properties.forEach(prop => {
 - `operator_structure` - Trust auto-sanitization!
 
 **Related Skills**:
-- **[SKILL.md](SKILL.md)** - Main validation guide
+- **[SKILL.md](../../workflow-validate.md)** - Main validation guide
 - **[FALSE_POSITIVES.md](FALSE_POSITIVES.md)** - When to ignore warnings
 - **n8n Expression Syntax** - Fix expression errors
 - **n8n MCP Tools Expert** - Use validation tools correctly

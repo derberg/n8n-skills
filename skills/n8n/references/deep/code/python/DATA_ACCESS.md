@@ -697,6 +697,6 @@ return [{"json": lookup}]
 - Be explicit: Use `_input.first()["json"]["field"]` instead of `_json["field"]`
 
 **See Also**:
-- [SKILL.md](SKILL.md) - Overview and quick start
+- [SKILL.md](../../../workflow-code.md) - Overview and quick start
 - [COMMON_PATTERNS.md](COMMON_PATTERNS.md) - Python-specific patterns
 - [ERROR_PATTERNS.md](ERROR_PATTERNS.md) - Avoid common mistakes

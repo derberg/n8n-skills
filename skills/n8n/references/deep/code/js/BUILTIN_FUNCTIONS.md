@@ -822,6 +822,6 @@ return [{
 - Hashing: Use crypto module
 
 **See Also**:
-- [SKILL.md](SKILL.md) - Overview
+- [SKILL.md](../../../workflow-code.md) - Overview
 - [COMMON_PATTERNS.md](COMMON_PATTERNS.md) - Real usage examples
 - [ERROR_PATTERNS.md](ERROR_PATTERNS.md) - Error prevention
