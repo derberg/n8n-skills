@@ -70,7 +70,7 @@ done
 
 # Build complete bundle (for Claude Code)
 echo "📦 Building complete bundle for Claude Code..."
-zip -rq "$DIST_DIR/n8n-mcp-skills-v${VERSION}.zip" \
+zip -rq "$DIST_DIR/n8n-skills-v${VERSION}.zip" \
     .claude-plugin/ \
     plugin.json \
     mcp.json \
@@ -80,6 +80,8 @@ zip -rq "$DIST_DIR/n8n-mcp-skills-v${VERSION}.zip" \
     NOTICES \
     NOTICES-APACHE-2.0.txt \
     skills/ \
+    scripts/ \
+    CHANGELOG.md \
     -x "*.DS_Store" -x "*-workspace/*" -x "*-workspace/"
 
 # Show results
