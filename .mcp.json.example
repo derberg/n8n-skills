@@ -2,13 +2,14 @@
   "mcpServers": {
     "n8n-mcp": {
       "command": "npx",
-      "args": ["n8n-mcp"],
+      "args": ["-y", "n8n-mcp@2.77.0"],
       "env": {
         "MCP_MODE": "stdio",
         "LOG_LEVEL": "error",
         "DISABLE_CONSOLE_OUTPUT": "true",
-        "N8N_API_URL": "https://your-n8n-instance.com",
-        "N8N_API_KEY": "your-api-key-here"
+        "N8N_MCP_TELEMETRY_DISABLED": "true",
+        "N8N_API_URL": "${N8N_API_URL}",
+        "N8N_API_KEY": "${N8N_API_KEY}"
       }
     }
   }
