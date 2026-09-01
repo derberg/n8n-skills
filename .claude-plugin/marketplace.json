@@ -13,7 +13,7 @@
         "./skills/n8n"
       ],
       "description": "One n8n skill that routes to ten on-demand workflow references covering architecture, node configuration, expressions, Code nodes, AI agents, binary data, error handling, validation, instance lifecycle, and self-hosted deployment. No session injection; local pinned MCP server with telemetry disabled.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "Romuald Członkowski",
         "url": "https://www.aiadvisors.pl/en"

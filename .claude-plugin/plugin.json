@@ -1,6 +1,7 @@
 {
   "name": "n8n-skills",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "mcpServers": "./mcp.json",
   "description": "Single-skill n8n expert pack for Claude Code — one orchestrator skill routing to on-demand workflow references, no always-on context injection, local pinned MCP server with telemetry off.",
   "author": {
     "name": "Romuald Członkowski",
