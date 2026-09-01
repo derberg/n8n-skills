@@ -1,6 +1,8 @@
 {
   "id": "mcp-002",
-  "skills": ["n8n-mcp-tools-expert"],
+  "skills": [
+    "workflow-instances"
+  ],
   "query": "I'm getting 'node not found' errors when calling get_node_essentials. I'm using 'slack' as the nodeType. What's wrong?",
   "expected_behavior": [
     "Identifies incorrect nodeType format",

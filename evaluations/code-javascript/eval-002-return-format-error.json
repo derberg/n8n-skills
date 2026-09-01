@@ -1,9 +1,11 @@
 {
   "id": "code-js-002",
-  "skills": ["n8n-code-javascript"],
+  "skills": [
+    "workflow-code"
+  ],
   "query": "My Code node is showing an error: 'Return value must be an array of objects'. My code returns: return {json: {result: 'success', data: processedData}}; What's wrong?",
   "expected_behavior": [
-    "Activate n8n-code-javascript skill",
+    "Read references/workflow-code.md",
     "Explain the return format must be an ARRAY of objects",
     "Show correct syntax: return [{json: {result: 'success', data: processedData}}];",
     "Note the square brackets [] wrapping the object",

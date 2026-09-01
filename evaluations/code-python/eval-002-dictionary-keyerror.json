@@ -1,6 +1,5 @@
 {
   "id": "code-python-002",
-  "skill": "n8n-code-python",
   "name": "Dictionary KeyError - Use .get() Instead",
   "description": "Tests understanding of safe dictionary access with .get()",
   "query": "My Python Code node is failing with this error:\n\n```\nKeyError: 'email'\n```\n\nHere's my code:\n\n```python\nitem = _input.first()[\"json\"]\n\nname = item[\"name\"]\nemail = item[\"email\"]\nage = item[\"age\"]\n\nreturn [{\n    \"json\": {\n        \"name\": name,\n        \"email\": email,\n        \"age\": age\n    }\n}]\n```\n\nHow do I fix this?",
@@ -22,5 +21,8 @@
     "try/except KeyError",
     "if 'email' in item"
   ],
-  "correct_code_pattern": "item.get(\"email\", "
+  "correct_code_pattern": "item.get(\"email\", ",
+  "skills": [
+    "workflow-code"
+  ]
 }

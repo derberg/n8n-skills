@@ -1,6 +1,8 @@
 {
   "id": "node-config-003",
-  "skills": ["n8n-node-configuration"],
+  "skills": [
+    "workflow-nodes"
+  ],
   "query": "My IF node configuration is valid with operation='equals', but when I change to operation='isEmpty', validation fails. Why?",
   "expected_behavior": [
     "Explains that isEmpty is a unary operator (single value)",

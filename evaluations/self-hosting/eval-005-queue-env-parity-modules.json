@@ -1,9 +1,11 @@
 {
   "id": "self-hosting-005",
-  "skills": ["n8n-self-hosting"],
+  "skills": [
+    "workflow-self-host"
+  ],
   "query": "We run n8n in queue mode (1 main + 3 workers, Docker Compose, Caddy) on root@203.0.113.10. I want to turn on the new Agents feature. What do I need to change?",
   "expected_behavior": [
-    "Activate n8n-self-hosting and read QUEUE_MODE.md before answering — modules + env parity live there",
+    "Activate references/workflow-self-host.md and read QUEUE_MODE.md before answering — modules + env parity live there",
     "Identify N8N_ENABLED_MODULES=agents as the flag (a comma-separated opt-in list; agents is NOT on by default)",
     "Insist the flag reaches the WORKERS as well as the main — in the template that means the shared x-n8n-env anchor, not the main service's own environment block",
     "Explain WHY: the main serves the UI/REST so the feature looks configured there, but workers execute the workflows; with OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS=true even a manual test run goes to a worker",

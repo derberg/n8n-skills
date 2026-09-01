@@ -1,6 +1,8 @@
 {
   "id": "pattern-003",
-  "skills": ["n8n-workflow-patterns"],
+  "skills": [
+    "workflow-design"
+  ],
   "query": "How do I build a workflow that syncs data between two databases? I need to read from Postgres and write to MySQL.",
   "expected_behavior": [
     "Identifies this as a Database Operations pattern",

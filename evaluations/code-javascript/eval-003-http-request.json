@@ -1,9 +1,11 @@
 {
   "id": "code-js-003",
-  "skills": ["n8n-code-javascript"],
+  "skills": [
+    "workflow-code"
+  ],
   "query": "How do I make an HTTP API call from inside a JavaScript Code node in n8n? I need to call an external API with authentication.",
   "expected_behavior": [
-    "Activate n8n-code-javascript skill",
+    "Read references/workflow-code.md",
     "Explain $helpers.httpRequest() built-in function",
     "Show complete example with method, url, headers",
     "Include authentication example (Bearer token or API key)",

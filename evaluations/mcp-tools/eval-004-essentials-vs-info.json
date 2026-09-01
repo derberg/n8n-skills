@@ -1,6 +1,8 @@
 {
   "id": "mcp-004",
-  "skills": ["n8n-mcp-tools-expert"],
+  "skills": [
+    "workflow-instances"
+  ],
   "query": "Should I use get_node_info or get_node_essentials to understand how to configure a node? What's the difference?",
   "expected_behavior": [
     "Strongly recommends get_node_essentials for most cases",

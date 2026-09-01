@@ -1,9 +1,11 @@
 {
   "id": "error-handling-003",
-  "skills": ["n8n-error-handling"],
+  "skills": [
+    "workflow-errors"
+  ],
   "query": "I have a scheduled n8n workflow that runs every hour and pulls data from a third-party API that's a bit flaky — every few days it 429s or times out, the run fails, and nobody finds out until someone notices the downstream data is stale. There's no webhook and no Respond node here, it just runs on a cron. How do I make this resilient and actually get alerted when it genuinely breaks?",
   "expected_behavior": [
-    "Activate n8n-error-handling skill",
+    "Read references/workflow-errors.md",
     "Recognize this is an unattended/scheduled workflow, not an API workflow, so the posture is retry + a workflow-level error workflow (not Respond-to-Webhook handling)",
     "Recommend self-healing first: set retryOnFail with maxTries and waitBetweenTries on the API-calling node so transient 429s and timeouts retry before being treated as a failure",
     "Note the engine limits: maxTries caps at 5 and waitBetweenTries caps at 5000ms, and retry fires on any error",

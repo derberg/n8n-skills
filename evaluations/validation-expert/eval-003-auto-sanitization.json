@@ -1,6 +1,8 @@
 {
   "id": "validation-003",
-  "skills": ["n8n-validation-expert"],
+  "skills": [
+    "workflow-validate"
+  ],
   "query": "I'm getting an error about 'Binary operator cannot have singleValue property'. What does this mean?",
   "expected_behavior": [
     "Identifies this as an operator structure issue",

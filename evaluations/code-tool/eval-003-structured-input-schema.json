@@ -1,9 +1,11 @@
 {
   "id": "code-tool-003",
-  "skills": ["n8n-code-tool"],
+  "skills": [
+    "workflow-code"
+  ],
   "query": "My AI agent needs to call a leasing calculator tool with three numeric inputs: price, months, and residual_percent. Right now the agent passes them as one comma-separated string and my parsing keeps breaking. What's the right way to define multiple typed inputs for a Code Tool?",
   "expected_behavior": [
-    "Activate n8n-code-tool skill",
+    "Read references/workflow-code.md",
     "Recommend specifyInputSchema: true so the tool becomes a DynamicStructuredTool with typed arguments",
     "Show schemaType: 'fromJson' with a jsonSchemaExample (simplest) or schemaType: 'manual' with a full JSON Schema",
     "Show that query is then a validated object: query.price, query.months, query.residual_percent",

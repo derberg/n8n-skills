@@ -1,6 +1,8 @@
 {
   "id": "expr-004",
-  "skills": ["n8n-expression-syntax"],
+  "skills": [
+    "workflow-expressions"
+  ],
   "query": "How do I reference data from my 'HTTP Request' node in a later Slack node? I need to access the response data.",
   "expected_behavior": [
     "Provides correct $node syntax with quotes around node name",

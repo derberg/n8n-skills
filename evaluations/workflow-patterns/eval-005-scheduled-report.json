@@ -1,6 +1,8 @@
 {
   "id": "pattern-005",
-  "skills": ["n8n-workflow-patterns"],
+  "skills": [
+    "workflow-design"
+  ],
   "query": "I need to generate a daily report that fetches analytics data and emails it to my team. What's the best workflow structure?",
   "expected_behavior": [
     "Identifies this as a Scheduled Tasks pattern",

@@ -1,6 +1,5 @@
 {
   "id": "code-python-003",
-  "skill": "n8n-code-python",
   "name": "Webhook Body Gotcha - Data Under [\"body\"]",
   "description": "Tests understanding that webhook data is nested under [\"body\"] key",
   "query": "I have a Webhook node receiving this JSON:\n\n```json\n{\n  \"name\": \"Alice\",\n  \"email\": \"alice@example.com\",\n  \"age\": 30\n}\n```\n\nIn my Python Code node, I'm trying to access the data:\n\n```python\ndata = _input.first()[\"json\"]\n\nname = data[\"name\"]  # KeyError!\nemail = data[\"email\"]  # KeyError!\n\nreturn [{\"json\": {\"name\": name, \"email\": email}}]\n```\n\nBut I'm getting KeyError. The webhook is receiving data correctly. What's wrong?",
@@ -19,5 +18,8 @@
     "data.get(\"body\", {})"
   ],
   "correct_code_pattern": "data.get(\"body\", {})",
-  "should_emphasize": "This is the MOST COMMON webhook mistake"
+  "should_emphasize": "This is the MOST COMMON webhook mistake",
+  "skills": [
+    "workflow-code"
+  ]
 }
