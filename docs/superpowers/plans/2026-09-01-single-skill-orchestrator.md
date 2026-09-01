@@ -608,6 +608,61 @@ git show HEAD:skills/n8n-agents/SKILL.md > /tmp/n8n-old-skills/agents.md
 
 `git show HEAD:<path>` retrieves any deleted file at any later point, so no copy is strictly required.
 
+- [ ] **Step 3b: Repair cross-references inside the relocated files**
+
+Discovered during execution, not present in the original spec. The upstream
+knowledge files cross-reference each other in two ways that both break on
+relocation — 127 occurrences across 19 files:
+
+1. **Prose skill references** — `→ **n8n-node-configuration**`,
+   `see **n8n-agents** TOOLS.md`. These name skills that no longer exist.
+2. **Relative markdown links** —
+   `[NODE_FAMILY_GOTCHAS.md](../n8n-node-configuration/NODE_FAMILY_GOTCHAS.md)`.
+   These point at directories that no longer exist.
+
+Both are caught by the validator (`check_no_old_skill_names` and
+`check_relative_links`). Fix mechanically; change nothing else in these files.
+
+Directory mapping for relative links — rewrite `../<old-dir>/` to `../<new>/`:
+
+| Old directory | New | Note |
+|---|---|---|
+| `n8n-workflow-patterns`, `n8n-subworkflows` | `design` | |
+| `n8n-node-configuration` | `nodes` | |
+| `n8n-expression-syntax` | `expressions` | |
+| `n8n-code-javascript` | `code/js` | |
+| `n8n-code-python` | `code/python` | |
+| `n8n-code-tool` | `code/tool` | |
+| `n8n-agents` | `agents` | |
+| `n8n-binary-and-data` | `binary` | |
+| `n8n-error-handling` | `errors` | |
+| `n8n-validation-expert` | `validate` | |
+| `n8n-self-hosting` | `self-host` | |
+| `n8n-mcp-tools-expert` | **per file** | `SEARCH_GUIDE.md` → `nodes`, `VALIDATION_GUIDE.md` → `validate`, `WORKFLOW_GUIDE.md` / `OPERATIONS_GUIDE.md` → `instances` |
+
+Prose skill references become route names, no path — the `SKILL.md` table is the
+index and bare names cannot dangle:
+
+| Old prose | New prose |
+|---|---|
+| `**n8n-node-configuration**` | `` the `workflow-nodes` route `` |
+| `**n8n-agents**` | `` the `workflow-agents` route `` |
+| `**n8n-code-javascript**` / `**n8n-code-python**` / `**n8n-code-tool**` | `` the `workflow-code` route `` |
+| `**n8n-expression-syntax**` | `` the `workflow-expressions` route `` |
+| `**n8n-error-handling**` | `` the `workflow-errors` route `` |
+| `**n8n-validation-expert**` | `` the `workflow-validate` route `` |
+| `**n8n-binary-and-data**` | `` the `workflow-binary` route `` |
+| `**n8n-workflow-patterns**` / `**n8n-subworkflows**` | `` the `workflow-design` route `` |
+| `**n8n-mcp-tools-expert**` / `**n8n-multi-instance**` | `` the `workflow-instances` route `` |
+| `**n8n-self-hosting**` | `` the `workflow-self-host` route `` |
+
+Heaviest files, to review by hand afterwards: `deep/validate/REVIEW_CHECKLIST.md`
+(61 occurrences), `deep/design/ai_agent_workflow.md` (20),
+`deep/agents/SUBWORKFLOW_AS_TOOL.md` (7), `deep/agents/TOOLS.md` (6).
+
+Verify: `python3 scripts/validate-pack.py 2>&1 | grep -E "dangling|old skill name"`
+must return nothing for any path under `skills/n8n/`.
+
 - [ ] **Step 4: Verify the file count is preserved**
 
 Run:
