@@ -16,6 +16,11 @@
 > `/plugin install n8n-skills@derberg-n8n-skills` — and
 > `/plugin uninstall n8n-skills@derberg-n8n-skills` to remove it.
 >
+> To unlock the workflow-management tools, set `N8N_API_URL` and `N8N_API_KEY`
+> once via the `env` key of a Claude Code settings file — gitignored
+> `.claude/settings.local.json` in your project, or `~/.claude/settings.json`
+> machine-wide. Without them the MCP server runs docs-only.
+>
 > Upstream owns the n8n expertise and deserves the credit for it. See
 > [CHANGELOG.md](CHANGELOG.md) for detail.
 
