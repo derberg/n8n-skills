@@ -6,7 +6,7 @@
 # Shared helper for PreToolUse hooks.
 # Reads the session_id from stdin (Claude Code hook input is JSON), checks for
 # a per-session marker file, and emits a one-shot reminder telling Claude to
-# invoke the relevant Skill via the Skill tool.
+# invoke the relevant Skill.
 #
 # Usage: _emit.sh <marker-name> <reminder-text>
 #
@@ -41,7 +41,7 @@ if [[ -z "${SESSION_ID}" ]]; then
   exit 0
 fi
 
-STATE_DIR="${TMPDIR:-/tmp}/n8n-mcp-skills-state"
+STATE_DIR="${TMPDIR:-/tmp}/n8n-skills-state"
 mkdir -p "${STATE_DIR}" 2>/dev/null || exit 0
 MARKER="${STATE_DIR}/${SESSION_ID}-${MARKER_NAME}.loaded"
 

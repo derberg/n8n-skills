@@ -10,7 +10,7 @@
 # "n8n-nodes-base.set") and route to the relevant skills. This is more robust
 # than grepping source code. Fires every call (no dedup).
 #
-# Routes: sub-workflow trigger -> n8n-subworkflows; LangChain agent -> n8n-agents.
+# Routes: sub-workflow trigger -> references/workflow-design.md; LangChain agent -> references/workflow-agents.md.
 
 set -uo pipefail
 
@@ -28,7 +28,7 @@ NODE_TYPES="$(echo "${INPUT}" | jq -r '
 # --- No node data (by-id validation or empty payload): generic gate ----------
 if [ -z "${NODE_TYPES//[[:space:]]/}" ]; then
   jq -n '{hookSpecificOutput:{hookEventName:"PostToolUse",additionalContext:
-    "[validate_workflow returned. Validation is necessary, not sufficient.] No node JSON was available to analyze. If this workflow is non-trivial, invoke n8n-validation-expert and n8n-workflow-patterns via the Skill tool and run the antipattern scan before activating."}}'
+    "[validate_workflow returned. Validation is necessary, not sufficient.] No node JSON was available to analyze. If this workflow is non-trivial, invoke the n8n skill (Skill tool) and read references/workflow-validate.md and references/workflow-design.md and run the antipattern scan before activating."}}'
   exit 0
 fi
 
@@ -68,7 +68,7 @@ DETECTED=""
 [ $HAS_SCHEDULE -eq 1 ]      && DETECTED+=" Schedule"
 [ -z "${DETECTED}" ] && DETECTED=" (none of the high-risk node types)"
 
-# Consolidated n8n-expression-syntax reasons
+# Consolidated references/workflow-expressions.md reasons
 EXPR_REASONS=""
 [ $HAS_SET -eq 1 ]      && EXPR_REASONS+="Set inline antipattern, "
 [ $HAS_DATETIME -eq 1 ] && EXPR_REASONS+="DateTime -> Luxon, "
@@ -77,36 +77,36 @@ EXPR_REASONS="${EXPR_REASONS%, }"
 
 SUGGESTIONS=""
 [ $HAS_MERGE -eq 1 ]      && SUGGESTIONS+="
-- n8n-node-configuration (Merge: numberOfInputs vs wire count, input index off-by-one)"
+- references/workflow-nodes.md (Merge: numberOfInputs vs wire count, input index off-by-one)"
 [ -n "${EXPR_REASONS}" ] && SUGGESTIONS+="
-- n8n-expression-syntax (${EXPR_REASONS})"
+- references/workflow-expressions.md (${EXPR_REASONS})"
 [ $HAS_CODE -eq 1 ]      && SUGGESTIONS+="
-- n8n-code-javascript (Code present: review against expression / Edit Fields alternatives; Python -> n8n-code-python; agent tool -> n8n-code-tool)"
+- references/workflow-code.md (Code present: review against expression / Edit Fields alternatives; Python -> references/workflow-code.md; agent tool -> references/workflow-code.md)"
 { [ $HAS_LOOP -eq 1 ] || [ $HAS_HTTP -eq 1 ]; } && SUGGESTIONS+="
-- n8n-code-javascript + n8n-workflow-patterns (Loop Over Items / HTTP pagination & batching)"
+- references/workflow-code.md + references/workflow-design.md (Loop Over Items / HTTP pagination & batching)"
 [ $HAS_SUBWF_TRIGGER -eq 1 ] && SUGGESTIONS+="
-- n8n-subworkflows (sub-workflow trigger: Define-Below input mode + return-shape rules)"
+- references/workflow-design.md (sub-workflow trigger: Define-Below input mode + return-shape rules)"
 [ $HAS_DATATABLE -eq 1 ] && SUGGESTIONS+="
-- n8n-node-configuration + n8n-workflow-patterns (Data Table: system columns, primitive-only types, map-in-Insert rule)"
+- references/workflow-nodes.md + references/workflow-design.md (Data Table: system columns, primitive-only types, map-in-Insert rule)"
 { [ $HAS_HTTP -eq 1 ] || [ $HAS_WEBHOOK -eq 1 ] || [ $HAS_RESPOND -eq 1 ]; } && SUGGESTIONS+="
-- n8n-mcp-tools-expert (auth surface present: use the credential system, never inline tokens)"
+- references/workflow-instances.md (auth surface present: use the credential system, never inline tokens)"
 { [ $HAS_WEBHOOK -eq 1 ] || [ $HAS_RESPOND -eq 1 ] || [ $HAS_SCHEDULE -eq 1 ] || [ $HAS_CHAT_TRIGGER -eq 1 ] || [ $HAS_AGENT -eq 1 ]; } && SUGGESTIONS+="
-- n8n-error-handling (unattended / webhook / agent workflow: wire an error branch on every fallible node; 4xx/5xx response shapes)"
+- references/workflow-errors.md (unattended / webhook / agent workflow: wire an error branch on every fallible node; 4xx/5xx response shapes)"
 [ "${NODE_COUNT}" -gt 6 ] && SUGGESTIONS+="
-- n8n-workflow-patterns (>6 nodes: architecture review, sticky notes, naming)"
+- references/workflow-design.md (>6 nodes: architecture review, sticky notes, naming)"
 [ $HAS_AGENT -eq 1 ]     && SUGGESTIONS+="
-- n8n-agents (LangChain Agent: tool names/descriptions are part of the prompt; structured output + autoFix; memory/sessionId)"
+- references/workflow-agents.md (LangChain Agent: tool names/descriptions are part of the prompt; structured output + autoFix; memory/sessionId)"
 
 if [ -z "${SUGGESTIONS}" ]; then
   WARNINGS="[validate_workflow returned. Validation is necessary, not sufficient.]
 Workflow analyzed: ${NODE_COUNT} node(s); detected:${DETECTED}.
 
-No high-risk patterns surfaced. If anything here is non-trivial, invoke n8n-validation-expert and n8n-workflow-patterns via the Skill tool and run the antipattern scan before activating."
+No high-risk patterns surfaced. If anything here is non-trivial, invoke the n8n skill (Skill tool) and read references/workflow-validate.md and references/workflow-design.md and run the antipattern scan before activating."
 else
   WARNINGS="[validate_workflow returned. Validation is necessary, not sufficient.]
 Workflow analyzed: ${NODE_COUNT} node(s); detected:${DETECTED}.
 
-If any of these skills are not already in your context, invoke them via the Skill tool:${SUGGESTIONS}
+Invoke the n8n skill (Skill tool) and read any of these references not already in your context:${SUGGESTIONS}
 
 This is the gate. Walk these BEFORE activating the workflow. Validation passing means the JSON is well-formed; it does NOT mean the workflow is correct."
 fi

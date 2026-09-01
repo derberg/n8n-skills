@@ -7,4 +7,4 @@
 # touch connections, where the most subtle bugs live (silently dropped wires,
 # Merge index off-by-one).
 exec "$(dirname "$0")/_emit.sh" "connections" \
-"Before updating: after applying the operations, verify the connections object with n8n_get_workflow. validate_workflow does not catch every multi-input wiring trap. For Merge node specifics (numberOfInputs, input index off-by-one) see n8n-node-configuration; for wiring that survives into runtime see n8n-validation-expert; for per-node error outputs (onError + wiring main[1]) see n8n-error-handling. Invoke them via the Skill tool."
+"Before updating: after applying the operations, verify the connections object with n8n_get_workflow. validate_workflow does not catch every multi-input wiring trap. For Merge node specifics (numberOfInputs, input index off-by-one) see references/workflow-nodes.md; for wiring that survives into runtime see references/workflow-validate.md; for per-node error outputs (onError + wiring main[1]) see references/workflow-errors.md. Invoke them."
