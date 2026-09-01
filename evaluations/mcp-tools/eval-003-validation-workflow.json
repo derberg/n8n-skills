@@ -1,6 +1,8 @@
 {
   "id": "mcp-003",
-  "skills": ["n8n-mcp-tools-expert"],
+  "skills": [
+    "workflow-instances"
+  ],
   "query": "I've created a Slack node configuration and want to make sure it's valid before deploying. Walk me through the validation process using n8n-mcp tools.",
   "expected_behavior": [
     "Recommends validate_node_operation tool",

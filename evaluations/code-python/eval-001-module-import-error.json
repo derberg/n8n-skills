@@ -1,6 +1,5 @@
 {
   "id": "code-python-001",
-  "skill": "n8n-code-python",
   "name": "Module Import Error - External Libraries Not Available",
   "description": "Tests understanding that Python Code nodes have NO external libraries",
   "query": "I'm writing a Python Code node to fetch data from an API. Here's my code:\n\n```python\nimport requests\n\nurl = \"https://api.example.com/users\"\nresponse = requests.get(url)\ndata = response.json()\n\nreturn [{\"json\": data}]\n```\n\nBut I'm getting a ModuleNotFoundError. What's wrong?",
@@ -24,5 +23,8 @@
     "pip install",
     "install requests",
     "add requirements.txt"
+  ],
+  "skills": [
+    "workflow-code"
   ]
 }

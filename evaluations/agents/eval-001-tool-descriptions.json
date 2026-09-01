@@ -1,9 +1,11 @@
 {
   "id": "agents-001",
-  "skills": ["n8n-agents"],
+  "skills": [
+    "workflow-agents"
+  ],
   "query": "I built an AI Agent in n8n and attached an HTTP Request Tool to it. The agent just never calls it — it answers from its own knowledge instead. The tool node is named 'tool1' and I left the description field blank because the URL is right there in the node. The model and memory are wired correctly. What's going on?",
   "expected_behavior": [
-    "Activate the n8n-agents skill",
+    "Activate the references/workflow-agents.md skill",
     "Explain that the agent selects tools ONLY by reading their name and description — it cannot see the node's URL or internal config",
     "Identify both problems: a generic name ('tool1') and an empty description make the tool effectively invisible to the model",
     "Note that this fails silently — there is usually no error, the agent just skips the tool or hallucinates",

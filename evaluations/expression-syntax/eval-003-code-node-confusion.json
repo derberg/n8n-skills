@@ -1,6 +1,8 @@
 {
   "id": "expr-003",
-  "skills": ["n8n-expression-syntax"],
+  "skills": [
+    "workflow-expressions"
+  ],
   "query": "I'm trying to use {{$json.email}} in my Code node to get the email address, but it's not working. The code shows the literal string '{{$json.email}}' instead of the value. How do I fix this?",
   "expected_behavior": [
     "Identifies that Code nodes use direct JavaScript access, NOT expressions",

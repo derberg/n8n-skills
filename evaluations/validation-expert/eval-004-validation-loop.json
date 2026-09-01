@@ -1,6 +1,8 @@
 {
   "id": "validation-004",
-  "skills": ["n8n-validation-expert"],
+  "skills": [
+    "workflow-validate"
+  ],
   "query": "I fixed one validation error but now I'm getting a different one. How do I systematically fix all validation errors?",
   "expected_behavior": [
     "Explains the validation loop pattern",

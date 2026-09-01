@@ -1,6 +1,8 @@
 {
   "id": "node-config-004",
-  "skills": ["n8n-node-configuration"],
+  "skills": [
+    "workflow-nodes"
+  ],
   "query": "Should I use get_node_essentials or get_node_info when configuring a new node? What's the difference?",
   "expected_behavior": [
     "Recommends get_node_essentials for configuration (91.7% success rate)",

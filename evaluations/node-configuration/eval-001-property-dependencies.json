@@ -1,6 +1,8 @@
 {
   "id": "node-config-001",
-  "skills": ["n8n-node-configuration"],
+  "skills": [
+    "workflow-nodes"
+  ],
   "query": "I'm configuring an HTTP Request node with method=POST. What other fields become required or visible when I set this?",
   "expected_behavior": [
     "Explains property dependencies (displayOptions)",

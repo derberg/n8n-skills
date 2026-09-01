@@ -1,6 +1,8 @@
 {
   "id": "pattern-004",
-  "skills": ["n8n-workflow-patterns"],
+  "skills": [
+    "workflow-design"
+  ],
   "query": "I want to build an AI agent that can use tools to answer questions. What's the recommended workflow pattern?",
   "expected_behavior": [
     "Identifies this as an AI Agent Workflow pattern",

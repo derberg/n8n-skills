@@ -1,6 +1,8 @@
 {
   "id": "expr-002",
-  "skills": ["n8n-expression-syntax"],
+  "skills": [
+    "workflow-expressions"
+  ],
   "query": "My webhook workflow is showing {{$json.name}} as undefined even though I'm sending {\"name\": \"John\"} in the webhook POST request. What am I doing wrong?",
   "expected_behavior": [
     "Identifies that webhook data is nested under .body property",

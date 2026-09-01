@@ -1,633 +1,181 @@
-# Development Guide
+# Development
 
-Guidelines for contributing to n8n-skills and developing new skills.
-
----
-
-## Development Philosophy
-
-### 1. Evaluation-Driven Development (EDD)
-
-Write tests **before** writing skills!
-
-**Process**:
-```
-1. Create 3+ evaluation scenarios
-2. Test baseline (without skill)
-3. Write minimal SKILL.md
-4. Test against evaluations
-5. Iterate until 100% pass
-6. Add reference files as needed
-```
-
-**Why**: Ensures skills solve real problems and can be tested objectively.
-
-### 2. MCP-Informed Content
-
-All content based on **real MCP tool responses**, not assumptions.
-
-**Process**:
-```
-1. Test MCP tools thoroughly
-2. Document actual responses
-3. Use real examples in skills
-4. Verify all code snippets work
-```
-
-**See**: [MCP_TESTING_LOG.md](MCP_TESTING_LOG.md) for reference data.
-
-### 3. Keep Skills Concise
-
-**Guideline**: SKILL.md should be under 500 lines
-
-**Why**: Longer skills are harder to maintain and slower to load.
-
-**Solution**: Split complex content into reference files:
-- SKILL.md: Core concepts and quick reference
-- REFERENCE_*.md: Detailed information
-- EXAMPLES.md: Working examples
-
-### 4. Real Examples Only
-
-**Never** invent examples. Always use:
-- Real templates from n8n-mcp
-- Actual MCP tool responses
-- Verified node configurations
-
----
-
-## Repository Structure
+## Structure
 
 ```
-n8n-skills/
-├── skills/                    # Skill implementations
-│   ├── n8n-expression-syntax/
-│   │   ├── SKILL.md          # Main skill content (< 500 lines)
-│   │   ├── COMMON_MISTAKES.md
-│   │   ├── EXAMPLES.md
-│   │   └── README.md         # Skill metadata
-│   └── ...
-├── evaluations/               # Test scenarios
-│   ├── expression-syntax/
-│   │   ├── eval-001-*.json
-│   │   └── ...
-│   └── ...
-├── docs/                      # Documentation
-│   ├── INSTALLATION.md
-│   ├── USAGE.md
-│   ├── DEVELOPMENT.md (this file)
-│   └── MCP_TESTING_LOG.md    # Real MCP responses
-├── README.md                  # Project overview
-├── LICENSE                    # MIT License
-└── .gitignore
+skills/n8n/
+  SKILL.md                  orchestrator: MCP basics + shared rules + route table
+  references/
+    workflow-*.md           the ten routes, read on demand
+    shared/                 mcp-tools.md, non-negotiables.md, drift.md
+    deep/                   51 upstream knowledge files — filenames FROZEN
+      design/ nodes/ expressions/ agents/ binary/ errors/
+      validate/ instances/ self-host/ code/{js,python,tool}/
+  assets/                   docker-compose, Caddyfile, .env examples
+hooks/
+  reset-markers.sh          SessionStart; resets dedup markers, injects NOTHING
+  pre-tool-use/             _emit.sh + 7 matchers on n8n MCP tool names
+  post-tool-use/            post-validate gate
+scripts/validate-pack.py    the structural gate
+evaluations/                57 eval files keyed on route names
+docs/superpowers/           the spec and plan behind this restructure
 ```
 
----
-
-## Creating a New Skill
-
-### Step 1: Define Scope
-
-**Questions to answer**:
-- What problem does this skill solve?
-- When should it activate?
-- What MCP tools will it teach?
-- What are 3 key examples?
-
-**Document in**: `skills/[skill-name]/README.md`
-
-### Step 2: Create Evaluations
-
-**Create**: `evaluations/[skill-name]/eval-001-description.json`
-
-**Format**:
-```json
-{
-  "id": "skill-001",
-  "skills": ["skill-name"],
-  "query": "User question or scenario",
-  "expected_behavior": [
-    "Skill should identify X",
-    "Skill should provide Y guidance",
-    "Skill should reference Z content"
-  ],
-  "baseline_without_skill": {
-    "likely_response": "Generic answer",
-    "expected_quality": "Low"
-  },
-  "with_skill_expected": {
-    "response_quality": "High",
-    "uses_skill_content": true,
-    "provides_correct_guidance": true
-  }
-}
-```
-
-**Create at least 3 evaluations** covering:
-1. Basic usage
-2. Common mistake
-3. Advanced scenario
-
-### Step 3: Test MCP Tools
-
-**Document tool responses** in `docs/MCP_TESTING_LOG.md`:
-
-```markdown
-## [Your Skill Name] - MCP Testing
-
-### Tool: tool_name
-
-**Test**:
-```javascript
-tool_name({param: "value"})
-```
-
-**Response**:
-```json
-{actual response}
-```
-
-**Key Insights**:
-- Finding 1
-- Finding 2
-```
-
-### Step 4: Write SKILL.md
-
-**Required frontmatter**:
-```markdown
----
-name: Skill Name
-description: When to use this skill. Use when [trigger conditions].
----
-```
-
-**Recommended structure**:
-```markdown
-# Skill Name
-
-## Quick Reference
-[Table or list of most common patterns]
-
-## Core Concepts
-[Essential knowledge]
-
-## Common Patterns
-[Real examples with code]
-
-## Common Mistakes
-[Errors and fixes]
-
-## Advanced Topics
-[Link to reference files]
-
-## Related Skills
-[Cross-references]
-```
-
-**Guidelines**:
-- Under 500 lines for SKILL.md
-- Use real examples from MCP testing
-- Include quick fixes table
-- Link to reference files
-- Cross-reference other skills
-
-### Step 5: Add Reference Files
-
-Create as needed:
-- `COMMON_MISTAKES.md` - Error catalog
-- `EXAMPLES.md` - Working examples
-- `PATTERNS.md` - Common patterns
-- `ADVANCED.md` - Deep dive topics
-
-**Each file**:
-- Should be focused on one topic
-- Under 200 lines
-- Real examples only
-- Cross-linked from SKILL.md
-
-### Step 6: Test Against Evaluations
-
-**Process**:
-1. Run evaluation scenarios with Claude
-2. Check if expected behaviors occur
-3. Document results
-4. Iterate SKILL.md if needed
-5. Repeat until 100% pass
-
-**Success criteria**:
-- All evaluations pass
-- Skill activates correctly
-- Content is accurate
-- Examples work
-
-### Step 7: Document Metadata
-
-**Create**: `skills/[skill-name]/README.md`
-
-```markdown
-# Skill Name
-
-**Purpose**: One-sentence description
-
-**Activates on**: keyword1, keyword2, keyword3
-
-**File Count**: X files, ~Y lines
-
-**Dependencies**:
-- n8n-mcp tools: tool1, tool2
-- Other skills: skill1, skill2
-
-**Coverage**:
-- Topic 1
-- Topic 2
-- Topic 3
-
-**Evaluations**: X scenarios (X% pass rate)
-
-**Last Updated**: YYYY-MM-DD
-```
-
----
-
-## Evaluation Guidelines
-
-### Good Evaluations
-
-**Characteristics**:
-- Specific, measurable expected behavior
-- Based on real user queries
-- Cover common and edge cases
-- Include baseline comparison
-
-**Example**:
-```json
-{
-  "id": "expr-001",
-  "query": "Why is {{$json.email}} undefined in my webhook workflow?",
-  "expected_behavior": [
-    "Identifies webhook data structure issue",
-    "Explains data is under $json.body",
-    "Provides corrected expression: {{$json.body.email}}",
-    "References webhook structure documentation"
-  ]
-}
-```
-
-### Bad Evaluations
-
-**Avoid**:
-- Vague expected behaviors
-- Unrealistic scenarios
-- No baseline comparison
-- Too simple or too complex
-
----
-
-## Testing
-
-### Manual Testing
-
-```
-1. Start Claude Code
-2. Load skill
-3. Ask evaluation query
-4. Verify expected behaviors
-5. Document results
-```
-
-### Automated Testing
-
-*Coming soon: Evaluation framework*
-
----
-
-## MCP Tool Testing Guidelines
-
-### Before Writing Skills
-
-**Test these tools**:
-```javascript
-// Node discovery
-search_nodes({query: "keyword"})
-search_nodes({category: "trigger"})
-get_node({nodeType: "nodes-base.webhook"})
-
-// Validation
-validate_node({mode: "minimal"})({nodeType: "nodes-base.slack", config: {}})
-validate_node({nodeType: "nodes-base.slack", config: {...}, profile: "runtime"})
-
-// Templates
-search_templates({query: "webhook"})
-get_template({templateId: 2947, mode: "structure"})
-
-// Workflow management (if API available)
-n8n_create_workflow({...})
-n8n_update_partial_workflow({...})
-n8n_validate_workflow({...})
-```
-
-### Document Findings
-
-**In MCP_TESTING_LOG.md**:
-- Actual responses
-- Performance (timing)
-- Gotchas discovered
-- Format differences
-- Error messages
-
-### Use Real Data
-
-**Extract from tools**:
-- Node structures
-- Template examples
-- Validation errors
-- Property dependencies
-
-**Use in skills**:
-- Real node configurations
-- Actual error messages
-- Working template IDs
-- Proven patterns
-
----
-
-## Code Standards
-
-### Markdown
-
-**Formatting**:
-```markdown
-# H1 - Skill Title
-## H2 - Major Sections
-### H3 - Subsections
-
-**Bold** for emphasis
-`code` for inline code
-\`\`\`language for code blocks
-```
-
-**Code blocks**:
-```javascript
-// Always specify language
-// Include comments
-// Use real, working examples
-```
-
-### JSON (Evaluations)
-
-**Format**:
-```json
-{
-  "id": "kebab-case-id",
-  "skills": ["exact-skill-name"],
-  "query": "Natural user question",
-  "expected_behavior": [
-    "Specific measurable behavior"
-  ]
-}
-```
-
----
-
-## Git Workflow
-
-### Branching
+## The gate
 
 ```bash
-# Feature branch
-git checkout -b skill/skill-name
-
-# Bug fix
-git checkout -b fix/issue-description
+python3 scripts/validate-pack.py
 ```
 
-### Commits
+Must pass before any commit. It checks:
 
-**Format**:
-```
-type(scope): brief description
+- exactly one skill, named `n8n`, with `name` matching the directory
+- frontmatter present, `description` ≤ 1024 chars and carrying the trigger vocabulary
+- `SKILL.md` body ≤ 12,000 bytes
+- all ten route files exist **and** are listed in the routing table
+- every `references/...` path mentioned anywhere resolves
+- every relative markdown link resolves (code fences and syntax illustrations excluded)
+- no old skill name has crept back in, anywhere under `skills/`, `hooks/`, `evaluations/`
+- hook scripts exist and are executable; `session-start.sh` is gone; `reset-markers.sh`
+  emits no `additionalContext`; the `SessionStart` matcher is `clear|compact` only
+- `mcp.json`: no hosted endpoint, pinned version, telemetry disabled, credentials from the
+  environment — and `.mcp.json.example` agreeing with it
+- both plugin manifests named `n8n-skills` at the same version
+- every eval's `skills` entries are known route names
+- `README.md` opens with the fork banner
 
-Longer description if needed.
+Stdlib only, so it runs under any `python3`.
 
-Refs: #issue-number
-```
+## Invariants
 
-**Types**:
-- `feat`: New skill or feature
-- `fix`: Bug fix
-- `docs`: Documentation
-- `test`: Evaluations
-- `refactor`: Code improvement
+**`references/deep/**` filenames are frozen.** They match upstream exactly. The eval suite
+asserts on them in `expected_content`, and identical names keep `git merge upstream/main`
+tractable. Edit contents freely; do not rename or relocate.
 
-**Examples**:
-```
-feat(expression-syntax): add webhook data structure guide
-fix(mcp-tools): correct nodeType format examples
-docs(usage): add cross-skill composition examples
-test(validation): add auto-sanitization evaluation
-```
+**`SKILL.md` stays under 12,000 bytes.** It is read on every n8n task — that budget is the
+whole point of the restructure. Depth belongs in a route file, and a route's depth belongs
+in `deep/`.
 
-### Pull Requests
+**No hook emits `additionalContext` on `SessionStart`.** Removing that injection is why this
+fork exists.
 
-**Include**:
-- Description of changes
-- Evaluation results (if new skill)
-- MCP testing performed
-- Documentation updated
+**Nothing secret is committed.** Credentials reach the MCP server only through
+`${N8N_API_URL}` and `${N8N_API_KEY}`.
 
-**Template**:
-```markdown
-## Description
-[What changed and why]
+## Adding a route
 
-## Evaluations
-- [ ] eval-001: PASS
-- [ ] eval-002: PASS
-- [ ] eval-003: PASS
+1. Create `skills/n8n/references/workflow-<name>.md`.
+2. Add a row to the route table in `SKILL.md` — with a **Trigger** cell carrying concrete
+   vocabulary a user would actually type, not a category label.
+3. Add `"workflow-<name>"` to `ROUTES` in `scripts/validate-pack.py`.
+4. Add at least one eval under `evaluations/<name>/`.
+5. Run the validator.
 
-## MCP Testing
-- Tested tools: [list]
-- New findings: [list]
+### Route file shape
 
-## Documentation
-- [ ] SKILL.md updated
-- [ ] README.md updated
-- [ ] MCP_TESTING_LOG.md updated
+Every route follows the same shape, so they are predictable to read:
 
-## Checklist
-- [ ] SKILL.md under 500 lines
-- [ ] Real examples only
-- [ ] All evaluations pass
-- [ ] Cross-references added
-```
+1. one line on what the route owns;
+2. the rules that actually prevent failures, with the specifics inline (a rule the reader
+   has to go elsewhere to act on is not a rule);
+3. a table of deeper references with a one-line reason to open each.
 
----
+Keep the *decision* in the route and the *catalog* in `deep/`. A reader who only opens the
+route should still make the right call.
 
-## File Naming Conventions
+## Evals
 
-### Skills
+Each file is one scenario:
 
-```
-skills/skill-name/
-  SKILL.md              # Main content
-  COMMON_MISTAKES.md    # Error catalog
-  EXAMPLES.md           # Working examples
-  README.md             # Metadata
-  [optional files].md   # Additional references
+```json
+{
+  "id": "code-js-001",
+  "skills": ["workflow-code"],
+  "query": "…what the user types…",
+  "expected_behavior": ["Read references/workflow-code.md", "…"],
+  "expected_content": ["$json.body.name", "DATA_ACCESS.md"],
+  "priority": "high",
+  "notes": "…"
+}
 ```
 
-### Evaluations
+`skills` must be route names. `expected_content` asserting on a `deep/` filename is the
+reason those filenames are frozen — do not change one without changing the other.
 
-```
-evaluations/skill-name/
-  eval-001-short-description.json
-  eval-002-short-description.json
-  eval-003-short-description.json
-```
+## Hooks
 
-**Naming**: `eval-NNN-kebab-case-description.json`
+`hooks/pre-tool-use/_emit.sh` is the shared emitter: it reads `session_id` from the hook
+JSON on stdin, dedups on a marker file at
+`$TMPDIR/n8n-skills-state/<session_id>-<marker>.loaded`, and prints
+`hookSpecificOutput.additionalContext`. Different tools pointing at the same route should
+share a marker so they do not double-fire.
 
----
+`hooks/reset-markers.sh` clears those markers on `clear` and `compact`, and
+garbage-collects markers older than 7 days. **The state directory name must match in both
+files** — a mismatch silently breaks the reset, and nothing will tell you.
 
-## Documentation Standards
+Keep reminders terse and *actionable at that moment*. Content that only makes sense with
+surrounding context belongs in the route file.
 
-### SKILL.md Frontmatter
-
-**Required**:
-```yaml
----
-name: Exact Skill Name
-description: When this skill activates. Use when [triggers]. Include specific keywords.
----
+```bash
+shellcheck hooks/reset-markers.sh hooks/pre-tool-use/*.sh hooks/post-tool-use/*.sh
 ```
 
-### Cross-References
+`SC2016` in `hooks/post-tool-use/validate-workflow.sh` is a known false positive — the
+single-quoted `\$json\.` is an intentional literal grep pattern, and it is upstream code.
 
-**Link to**:
-- Related skills
-- Reference files
-- MCP tool documentation
-- Real templates
+## Building
 
-**Format**:
-```markdown
-See [n8n MCP Tools Expert](../n8n-mcp-tools-expert/SKILL.md)
-See [COMMON_MISTAKES.md](COMMON_MISTAKES.md)
-See template #2947 for example
+```bash
+bash build.sh
 ```
 
----
+Produces `dist/n8n-v<version>.zip` (the skill alone, for Claude.ai) and
+`dist/n8n-skills-v<version>.zip` (the full plugin). The skill list is derived from the tree,
+so a new skill cannot be silently left out. `dist/` is gitignored; zips ship as release
+assets.
 
-## Quality Checklist
+Both `plugin.json` and `.claude-plugin/plugin.json` carry a version and `build.sh` refuses
+to run if they disagree.
 
-Before submitting a skill:
+## Pulling from upstream
 
-### Content Quality
-- [ ] All examples tested with real MCP tools
-- [ ] No invented/fake examples
-- [ ] SKILL.md under 500 lines
-- [ ] Clear, actionable guidance
-- [ ] Real error messages included
-
-### Testing
-- [ ] 3+ evaluations created
-- [ ] All evaluations pass
-- [ ] Baseline comparison documented
-- [ ] Cross-skill integration tested
-
-### Documentation
-- [ ] Frontmatter correct
-- [ ] README.md metadata complete
-- [ ] MCP_TESTING_LOG.md updated
-- [ ] Cross-references added
-- [ ] Examples documented
-
-### Code Standards
-- [ ] Markdown properly formatted
-- [ ] Code blocks have language specified
-- [ ] Consistent naming conventions
-- [ ] Proper git commits
-
----
-
-## Common Pitfalls
-
-### ❌ Don't
-
-- Invent examples or data
-- Exceed 500 lines in SKILL.md
-- Skip MCP tool testing
-- Write skills without evaluations
-- Use generic error messages
-- Assume tool behavior
-
-### ✅ Do
-
-- Test tools and document responses
-- Use real templates and configurations
-- Write evaluations first
-- Keep skills concise
-- Cross-reference related skills
-- Verify all code works
-
----
-
-## Release Process
-
-### Version Numbering
-
-**Format**: `MAJOR.MINOR.PATCH`
-
-- **MAJOR**: New skills added
-- **MINOR**: Skill improvements
-- **PATCH**: Bug fixes, typos
-
-### Changelog
-
-Update `CHANGELOG.md`:
-```markdown
-## [1.1.0] - 2025-10-20
-
-### Added
-- New skill: n8n Expression Syntax
-- 3 evaluations for expression syntax
-
-### Changed
-- Improved MCP Tools Expert validation guidance
-
-### Fixed
-- Corrected nodeType format in examples
+```bash
+git fetch upstream
+git merge upstream/main
 ```
 
----
+This will conflict in `skills/`, because the entry surface was restructured. Frozen `deep/`
+filenames limit the damage:
 
-## Support
+- **Take upstream's** content changes inside `references/deep/` files.
+- **Keep ours** for `SKILL.md`, `references/workflow-*.md`, `references/shared/*`,
+  `mcp.json`, `hooks/hooks.json`, the manifests and the README.
 
-### Getting Help
+Then re-run the validator. Upstream prose regularly names the old skills, and
+`check_no_old_skill_names` is what catches it — remap any that arrive:
 
-- **Issues**: https://github.com/czlonkowski/n8n-skills/issues
-- **Discussions**: https://github.com/czlonkowski/n8n-skills/discussions
-- **n8n-mcp**: https://github.com/romualdczlonkowski/n8n-mcp
+| Upstream name | Route |
+|---|---|
+| `n8n-workflow-patterns`, `n8n-subworkflows` | `workflow-design` |
+| `n8n-node-configuration` | `workflow-nodes` |
+| `n8n-expression-syntax` | `workflow-expressions` |
+| `n8n-code-javascript`, `n8n-code-python`, `n8n-code-tool` | `workflow-code` |
+| `n8n-agents` | `workflow-agents` |
+| `n8n-binary-and-data` | `workflow-binary` |
+| `n8n-error-handling` | `workflow-errors` |
+| `n8n-validation-expert` | `workflow-validate` |
+| `n8n-mcp-tools-expert`, `n8n-multi-instance` | `workflow-instances` |
+| `n8n-self-hosting` | `workflow-self-host` |
 
-### Reporting Bugs
+## Bumping the pinned MCP version
 
-**Include**:
-- Skill name and version
-- Evaluation that fails
-- Expected vs actual behavior
-- MCP tool versions
+`n8n-mcp@<version>` appears in three places that must agree: `mcp.json`,
+`.mcp.json.example`, and `PINNED_MCP` in `scripts/validate-pack.py`. The validator enforces
+the first two against the third. Read upstream's changelog before bumping — tool names and
+parameter shapes drift, and the routes describe them.
 
----
+## Commit conventions
 
-## License
-
-All contributions must be compatible with MIT License.
-
----
-
-**Happy developing!** 🚀
-
----
-
-Conceived by Romuald Członkowski - [www.aiadvisors.pl/en](https://www.aiadvisors.pl/en)
+Conventional commits (`feat:`, `fix:`, `docs:`, `test:`, `chore:`, `refactor:`). No
+`Co-Authored-By` trailers.

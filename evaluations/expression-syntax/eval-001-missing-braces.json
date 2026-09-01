@@ -1,6 +1,8 @@
 {
   "id": "expr-001",
-  "skills": ["n8n-expression-syntax"],
+  "skills": [
+    "workflow-expressions"
+  ],
   "query": "I'm trying to access an email field in my n8n Slack node using $json.email but it's showing as literal text '$json.email' in the message. What's wrong?",
   "expected_behavior": [
     "Identifies missing curly braces around the expression",

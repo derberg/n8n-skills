@@ -1,354 +1,159 @@
-# Installation Guide
-
-Complete installation instructions for n8n-skills across all platforms.
-
----
+# Installation
 
 ## Prerequisites
 
-### 1. n8n-mcp MCP Server
+1. **Claude Code**, or any client that loads Agent Plugins (Codex, Cursor, Copilot, …)
+2. **Node.js**, so `npx` can launch the local `n8n-mcp` server
+3. An **n8n instance**, only if you want the workflow-management tools — see
+   [Two tiers of tools](#two-tiers-of-tools)
 
-You **must** have the n8n-mcp MCP server installed and configured before using these skills.
+## Claude Code
 
-**Install n8n-mcp**:
+### Plugin install (recommended)
+
 ```bash
-npm install -g n8n-mcp
+/plugin marketplace add derberg/n8n-skills
+/plugin install n8n-skills
 ```
 
-**Configure MCP server** in `.mcp.json`:
+This wires the skill, the hooks and the MCP server together.
+
+### Load from a clone
+
+```bash
+git clone https://github.com/derberg/n8n-skills.git
+claude --plugin-dir ./n8n-skills
+```
+
+### Skill only, no plugin
+
+The skill is self-contained. Copy the one directory:
+
+```bash
+git clone https://github.com/derberg/n8n-skills.git
+cp -r n8n-skills/skills/n8n ~/.claude/skills/
+```
+
+You lose the hooks (the enforcement layer) and the bundled MCP config, which you then wire
+yourself — see below.
+
+## The MCP server
+
+The plugin ships [`mcp.json`](../mcp.json) pointing at a **local, version-pinned**
+`n8n-mcp` over stdio:
+
 ```json
 {
   "mcpServers": {
     "n8n-mcp": {
       "command": "npx",
-      "args": ["n8n-mcp"],
+      "args": ["-y", "n8n-mcp@2.77.0"],
       "env": {
         "MCP_MODE": "stdio",
         "LOG_LEVEL": "error",
         "DISABLE_CONSOLE_OUTPUT": "true",
-        "N8N_API_URL": "https://your-n8n-instance.com",
-        "N8N_API_KEY": "your-api-key-here"
+        "N8N_MCP_TELEMETRY_DISABLED": "true",
+        "N8N_API_URL": "${N8N_API_URL}",
+        "N8N_API_KEY": "${N8N_API_KEY}"
       }
     }
   }
 }
 ```
 
-**Note**: `N8N_API_URL` and `N8N_API_KEY` are optional but enable workflow creation/management tools.
+Three things to know about it.
 
-### 2. Claude Access
+**It is local and pinned.** Upstream pointed at the hosted `https://api.n8n-mcp.com/mcp`
+endpoint, which sends node lookups and workflow queries to a third party and cannot target
+your own n8n. This fork runs the server on your machine, at an exact version rather than
+whatever `npx n8n-mcp` resolves to at spawn time.
 
-You need one of:
-- **Claude Code** (desktop application)
-- **Claude.ai** (web interface)
-- **Claude API** (via SDK)
+**Telemetry is disabled.** `n8n-mcp` ships telemetry **enabled by default** — it is opt-out
+only, and the package includes a workflow sanitizer and mutation tracker, meaning it reports
+sanitized workflow content. `N8N_MCP_TELEMETRY_DISABLED=true` turns it off.
+`TELEMETRY_DISABLED` and `DISABLE_TELEMETRY` are also accepted; `true` or `1` disables.
 
----
-
-## Installation Methods
-
-### Method 1: Claude Code (Recommended)
-
-**Step 1**: Clone the repository
-```bash
-git clone https://github.com/czlonkowski/n8n-skills.git
-cd n8n-skills
-```
-
-**Step 2**: Copy skills to Claude Code skills directory
-
-**macOS/Linux**:
-```bash
-mkdir -p ~/.claude/skills
-cp -r skills/* ~/.claude/skills/
-```
-
-**Windows**:
-```powershell
-New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.claude\skills"
-Copy-Item -Recurse skills\* "$env:USERPROFILE\.claude\skills\"
-```
-
-**Step 3**: Verify installation
-```bash
-ls ~/.claude/skills/
-# Should show: n8n-expression-syntax, n8n-mcp-tools-expert, etc.
-```
-
-**Step 4**: Reload Claude Code
-- Restart Claude Code application
-- Skills will activate automatically
-
----
-
-### Method 2: Claude.ai (Web Interface)
-
-**Step 1**: Download skill folders
-
-Download the repository and navigate to `skills/` directory. You'll need to upload each skill individually.
-
-**Step 2**: Zip each skill
-
-Prebuilt zips for every skill are attached to the [latest GitHub release](https://github.com/czlonkowski/n8n-skills/releases/latest). To build them yourself instead:
-```bash
-cd skills
-zip -r n8n-expression-syntax.zip n8n-expression-syntax/
-zip -r n8n-mcp-tools-expert.zip n8n-mcp-tools-expert/
-zip -r n8n-workflow-patterns.zip n8n-workflow-patterns/
-zip -r n8n-validation-expert.zip n8n-validation-expert/
-zip -r n8n-node-configuration.zip n8n-node-configuration/
-```
-
-**Step 3**: Upload to Claude.ai
-
-1. Go to Claude.ai
-2. Navigate to **Settings** → **Capabilities** → **Skills**
-3. Click **Upload Skill**
-4. Upload each `.zip` file individually
-5. Confirm each upload
-
-**Step 4**: Verify skills are active
-
-In a new conversation, type:
-```
-"List my active skills"
-```
-
-You should see all 5 n8n skills listed.
-
----
-
-### Method 3: Claude API / SDK
-
-**Step 1**: Install via package manager
-
-If you're building an application with Claude SDK:
-
-```typescript
-import Anthropic from '@anthropic-ai/sdk';
-
-const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
-
-// Load skills from directory
-const skillsDir = './skills';
-const skills = loadSkillsFromDirectory(skillsDir);
-
-const response = await client.messages.create({
-  model: 'claude-sonnet-4-5-20250929',
-  messages: [{
-    role: 'user',
-    content: 'Build a webhook to Slack workflow'
-  }],
-  skills: skills // Pass loaded skills
-});
-```
-
-**Step 2**: Skill loading function
-
-```typescript
-import fs from 'fs';
-import path from 'path';
-
-function loadSkillsFromDirectory(dir: string) {
-  const skillDirs = fs.readdirSync(dir);
-  return skillDirs.map(skillName => {
-    const skillPath = path.join(dir, skillName, 'SKILL.md');
-    const skillContent = fs.readFileSync(skillPath, 'utf-8');
-
-    return {
-      name: skillName,
-      content: skillContent
-    };
-  });
-}
-```
-
----
-
-### Method 4: Other Agents and IDEs (Antigravity, etc.)
-
-Agent Skills are an open standard — any agent that supports the SKILL.md format can use these skills, not just Claude.
-
-**Step 1**: Clone or download this repository
+**Credentials come from your environment**, so nothing secret is committed:
 
 ```bash
-git clone https://github.com/czlonkowski/n8n-skills.git
+export N8N_API_URL="https://your-n8n.example.com"
+export N8N_API_KEY="…"
 ```
 
-**Step 2**: Copy the skill folders from `skills/` into your agent's skills directory. For example, for Google Antigravity follow its skills documentation (https://antigravity.google/docs/skills); other agents/IDEs have equivalent directories.
+Export them **before** starting your client — the MCP server reads them at spawn time.
 
-Each skill is a self-contained folder with a `SKILL.md` entry point plus reference files, so no transformation is needed.
+> `${VAR}` expansion is confirmed working in a project `.mcp.json`. If your client does not
+> expand it in a *plugin-level* `mcp.json`, drop those two lines and set the variables in
+> your own `.mcp.json` or shell profile instead. Check with `/mcp`: if the `n8n_*` tools are
+> missing while `search_nodes` is present, the API URL and key did not arrive.
 
----
+### Wiring it into your own project instead
+
+Copy [`.mcp.json.example`](../.mcp.json.example) to `.mcp.json` in your project. It carries
+the same server block.
+
+## Two tiers of tools
+
+| Tier | Tools | Needs |
+|---|---|---|
+| **Documentation and validation** | `search_nodes`, `get_node`, `validate_node`, `validate_workflow`, `tools_documentation`, template search | nothing — works offline |
+| **Instance management** | every `n8n_*` tool: create/update/get/list/test workflows, credentials, folders, data tables, audit, instances | `N8N_API_URL` + `N8N_API_KEY` |
+| **Token-gated extras** | `n8n_manage_agents`, `n8n_explore_node_resources`, data-table column actions, `n8n_test_workflow` pinned/direct methods, native version history | additionally `N8N_MCP_ACCESS_TOKEN` |
+
+If the `n8n_*` tools are absent, nothing is broken and there is nothing to retry. The skill
+is written to say so plainly and carry on with read-only work.
+
+## Claude.ai
+
+One skill means one upload.
+
+1. `bash build.sh`, then take `dist/n8n-v<version>.zip` (or grab it from the
+   [latest release](https://github.com/derberg/n8n-skills/releases/latest)).
+2. Upload via Settings → Capabilities → Skills.
+
+The hooks do not exist outside the Claude Code plugin install. The skill's
+`references/shared/non-negotiables.md` states this explicitly — assume you are un-hooked
+unless you have seen a hook fire.
+
+## Other agents and IDEs
+
+`skills/n8n/` is a self-contained folder with a `SKILL.md` entry point plus reference files,
+so no transformation is needed. Copy it into whatever skills directory your agent uses.
 
 ## Verification
 
-### Test Installation
-
-**1. Check MCP server availability**
-```
-Ask Claude: "Can you search for the webhook node using n8n-mcp?"
+```bash
+python3 scripts/validate-pack.py
 ```
 
-Expected response:
-```
-[Uses search_nodes tool]
-Found: nodes-base.webhook (Webhook trigger node)
-```
+Then in an interactive session:
 
-**2. Test skill activation**
-```
-Ask Claude: "How do I access webhook data in n8n expressions?"
-```
-
-Expected response:
-```
-[n8n Expression Syntax skill activates]
-Webhook data is under $json.body...
-```
-
-**3. Test cross-skill composition**
-```
-Ask Claude: "Build and validate a webhook to Slack workflow"
-```
-
-Expected: All 5 skills should activate and work together.
-
----
+1. `/mcp` — `n8n-mcp` should be connected. If the `n8n_*` tools are listed, your API URL
+   and key arrived.
+2. Confirm **nothing about n8n is injected at session start**. In a project unrelated to
+   n8n, no n8n content should appear in context until you mention n8n. That is the point of
+   this fork.
+3. Ask an n8n question and confirm the `n8n` skill is invoked and a route file is read.
 
 ## Troubleshooting
 
-### Skills Not Activating
+**The skill never activates.** With no session injection, the description is the whole
+trigger. Mention n8n, a workflow node, or an n8n expression explicitly. If it still does
+not fire, check that only one copy of the skill is installed — a stale install of the
+upstream fifteen-skill pack will shadow it. Uninstall `n8n-mcp-skills` if present.
 
-**Problem**: Skills don't activate when expected
-
-**Solutions**:
-1. Verify skills are in correct directory:
-   - Claude Code: `~/.claude/skills/`
-   - Check each skill has `SKILL.md` with frontmatter
-
-2. Check SKILL.md frontmatter format:
-   ```markdown
-   ---
-   name: n8n Expression Syntax
-   description: Validate n8n expression syntax...
-   ---
-   ```
-
-3. Reload Claude Code or clear cache
-
-### MCP Tools Not Available
-
-**Problem**: "n8n-mcp tools not available"
-
-**Solutions**:
-1. Verify `.mcp.json` is in correct location
-2. Check n8n-mcp is installed: `npm list -g n8n-mcp`
-3. Test MCP server: `npx n8n-mcp`
-4. Restart Claude Code
-
-### N8N API Tools Missing
-
-**Problem**: "n8n_create_workflow not available"
-
-**Solutions**:
-1. Verify `N8N_API_URL` and `N8N_API_KEY` in `.mcp.json`
-2. Test API access: `curl -H "X-N8N-API-KEY: your-key" https://your-n8n-instance/api/v1/workflows`
-3. Skills will still work with read-only tools (search, validate, templates)
-
-### Permission Issues
-
-**Problem**: Cannot write to skills directory
-
-**macOS/Linux**:
-```bash
-sudo chown -R $USER ~/.claude
-chmod -R 755 ~/.claude/skills
-```
-
-**Windows**: Run PowerShell as Administrator
-
----
-
-## Uninstallation
-
-### Remove All Skills
-
-**Claude Code**:
-```bash
-rm -rf ~/.claude/skills/n8n-*
-```
-
-**Claude.ai**:
-1. Go to Settings → Capabilities → Skills
-2. Delete each n8n skill individually
-
-### Remove Specific Skill
+**`n8n_*` tools missing.** `N8N_API_URL` / `N8N_API_KEY` did not reach the server. Confirm
+they are exported in the shell that started the client, not just in a later terminal. Test
+API access directly:
 
 ```bash
-rm -rf ~/.claude/skills/n8n-expression-syntax
+curl -H "X-N8N-API-KEY: $N8N_API_KEY" "$N8N_API_URL/api/v1/workflows"
 ```
 
----
+**MCP server will not start.** Check `npx -y n8n-mcp@2.77.0` runs on its own. Node must be
+installed and on `PATH` for the client's environment.
 
-## Updating
-
-### Update All Skills
-
-```bash
-cd n8n-skills
-git pull origin main
-cp -r skills/* ~/.claude/skills/
-```
-
-### Update Single Skill
-
-```bash
-cp -r skills/n8n-expression-syntax ~/.claude/skills/
-```
-
----
-
-## Advanced Configuration
-
-### Custom Skill Location
-
-If using custom skills directory:
-
-```bash
-# Set environment variable
-export CLAUDE_SKILLS_DIR="/path/to/custom/skills"
-
-# Copy skills
-cp -r skills/* $CLAUDE_SKILLS_DIR/
-```
-
-### Selective Installation
-
-Install only specific skills:
-
-```bash
-# Only expression syntax and MCP tools expert
-cp -r skills/n8n-expression-syntax ~/.claude/skills/
-cp -r skills/n8n-mcp-tools-expert ~/.claude/skills/
-```
-
----
-
-## Next Steps
-
-✅ Installation complete? Continue to [USAGE.md](USAGE.md) for usage examples.
-
----
-
-## Support
-
-- **Issues**: https://github.com/czlonkowski/n8n-skills/issues
-- **Discussions**: https://github.com/czlonkowski/n8n-skills/discussions
-- **n8n-mcp**: https://github.com/romualdczlonkowski/n8n-mcp
-
----
-
-Conceived by Romuald Członkowski - [www.aiadvisors.pl/en](https://www.aiadvisors.pl/en)
+**Reminders stopped firing after `/compact`.** They should not — `hooks/reset-markers.sh`
+clears the dedup markers on `clear` and `compact`. If they are still silent, check that
+`hooks/hooks.json` points at `reset-markers.sh` and that the state directory name matches
+the one in `hooks/pre-tool-use/_emit.sh` (`n8n-skills-state` in both).

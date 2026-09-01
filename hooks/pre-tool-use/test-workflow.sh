@@ -8,4 +8,4 @@
 # "about to run it for real" signal we have. This server has no execute_workflow
 # tool, so the error-handling reminder is surfaced here too.
 exec "$(dirname "$0")/_emit.sh" "testing" \
-"Before testing: invoke n8n-validation-expert (interpret what the run surfaces) and n8n-error-handling (are error branches wired? caller faults 4xx, your faults 5xx) via the Skill tool. n8n_test_workflow executes real nodes, Code, HTTP Request, database writes, Slack/email sends, and sub-workflow calls all fire for real. Ask the user before running if any node has user-visible side effects, and tell them which nodes ran live afterward."
+"Before testing: invoke the n8n skill (Skill tool) and read references/workflow-validate.md (interpret what the run surfaces) and references/workflow-errors.md (are error branches wired? caller faults 4xx, your faults 5xx). n8n_test_workflow executes real nodes, Code, HTTP Request, database writes, Slack/email sends, and sub-workflow calls all fire for real. Ask the user before running if any node has user-visible side effects, and tell them which nodes ran live afterward."

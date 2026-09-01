@@ -1,9 +1,11 @@
 {
   "id": "agents-003",
-  "skills": ["n8n-agents"],
+  "skills": [
+    "workflow-agents"
+  ],
   "query": "My AI Agent is supposed to return JSON that a downstream node parses — {score, category, reason}. I already attached a Structured Output Parser sub-node with a jsonSchemaExample. Most of the time it works, but every so often the agent returns slightly malformed JSON (a trailing comma, or it wraps the whole thing in a ```json code block) and the entire workflow crashes. How do I make this robust?",
   "expected_behavior": [
-    "Activate the n8n-agents skill",
+    "Activate the references/workflow-agents.md skill",
     "Explain that without autoFix, a single malformed parse halts the whole workflow",
     "Tell the user to enable autoFix: true on the outputParserStructured node",
     "Explain that autoFix wires a SECOND model into the parser's ai_languageModel slot as the fixer, which retries the bad output against the schema",

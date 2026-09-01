@@ -1,6 +1,8 @@
 {
   "id": "validation-001",
-  "skills": ["n8n-validation-expert"],
+  "skills": [
+    "workflow-validate"
+  ],
   "query": "I'm getting a validation error: 'Missing required field: channel'. What does this mean and how do I fix it?",
   "expected_behavior": [
     "Identifies this as a 'missing_required' error type",

@@ -1,9 +1,11 @@
 {
   "id": "error-handling-001",
-  "skills": ["n8n-error-handling"],
+  "skills": [
+    "workflow-errors"
+  ],
   "query": "I want my HTTP Request node's failures to go to a Slack alert instead of killing the workflow. I added the Slack node and connected the HTTP Request node to it, but on a real failure the workflow still just halts and Slack never fires. I read somewhere about an onError setting — do I need that too, or is the connection enough?",
   "expected_behavior": [
-    "Activate n8n-error-handling skill",
+    "Read references/workflow-errors.md",
     "Explain that routing a node's failure is a TWO-step setup and that the connection alone is not enough",
     "Identify the missing step: onError must be set to continueErrorOutput on the HTTP Request node, which is what creates the error output",
     "Explain that without onError set, the second output (main[1]) does not exist, so the wire never fires and the workflow halts on the default stopWorkflow behavior",

@@ -55,3 +55,13 @@ The adapted content above is included in compliance with Apache License 2.0,
 Section 4. No attribution notices are placed inside agent-facing skill content
 (SKILL.md or reference files); attribution lives here, in README.md, and in the
 header comments of the adapted hook scripts.
+
+--------------------------------------------------------------------------------
+
+This project is a fork of n8n-skills (https://github.com/czlonkowski/n8n-skills),
+Copyright (c) Romuald Członkowski, licensed under the MIT License. The skill
+knowledge content in skills/n8n/references/deep/ is derived from that project.
+
+The fork restructures the entry surface (one orchestrator skill instead of
+fifteen), removes the SessionStart context injection, and changes the MCP
+server configuration. See CHANGELOG.md.

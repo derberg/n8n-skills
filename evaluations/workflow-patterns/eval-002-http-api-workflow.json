@@ -1,6 +1,8 @@
 {
   "id": "pattern-002",
-  "skills": ["n8n-workflow-patterns"],
+  "skills": [
+    "workflow-design"
+  ],
   "query": "I want to fetch data from a REST API, transform it, and store it in my database. How should I structure this workflow?",
   "expected_behavior": [
     "Identifies this as an HTTP API Integration pattern",

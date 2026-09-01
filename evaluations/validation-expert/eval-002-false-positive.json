@@ -1,6 +1,8 @@
 {
   "id": "validation-002",
-  "skills": ["n8n-validation-expert"],
+  "skills": [
+    "workflow-validate"
+  ],
   "query": "Validation is warning me about 'best_practice' issues like error handling and retries. Do I need to fix these?",
   "expected_behavior": [
     "Identifies these as warnings, not errors",

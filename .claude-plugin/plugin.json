@@ -1,11 +1,17 @@
 {
-  "name": "n8n-mcp-skills",
-  "version": "1.34.0",
-  "description": "Expert skills for building n8n workflows with n8n-mcp, with a hooks enforcement layer",
+  "name": "n8n-skills",
+  "version": "0.1.0",
+  "description": "Single-skill n8n expert pack for Claude Code — one orchestrator skill routing to on-demand workflow references, no always-on context injection, local pinned MCP server with telemetry off.",
   "author": {
     "name": "Romuald Członkowski",
     "url": "https://www.aiadvisors.pl/en"
   },
+  "contributors": [
+    {
+      "name": "Lukasz Gornicki",
+      "url": "https://github.com/derberg"
+    }
+  ],
   "license": "MIT",
   "keywords": [
     "n8n",
@@ -18,6 +24,6 @@
     "javascript",
     "python"
   ],
-  "repository": "https://github.com/czlonkowski/n8n-skills",
-  "homepage": "https://github.com/czlonkowski/n8n-skills"
+  "repository": "https://github.com/derberg/n8n-skills",
+  "homepage": "https://github.com/derberg/n8n-skills"
 }

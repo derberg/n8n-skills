@@ -1,6 +1,8 @@
 {
   "id": "mcp-001",
-  "skills": ["n8n-mcp-tools-expert"],
+  "skills": [
+    "workflow-instances"
+  ],
   "query": "I need to find a node that can send messages to Slack. Which n8n-mcp tool should I use and how?",
   "expected_behavior": [
     "Recommends search_nodes as the starting tool",

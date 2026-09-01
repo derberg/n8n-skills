@@ -1,9 +1,11 @@
 {
   "id": "multi-instance-004",
-  "skills": ["n8n-multi-instance"],
+  "skills": [
+    "workflow-instances"
+  ],
   "query": "I built a workflow called 'Lead Intake' on my prod n8n and I want the same workflow copied onto my staging instance so I can test changes there. Both are connected through n8n-mcp. Can you replicate it?",
   "expected_behavior": [
-    "Activate n8n-multi-instance and treat this as the copy-between-instances task",
+    "Activate references/workflow-instances.md and treat this as the copy-between-instances task",
     "Switch to prod (own turn), confirm current, then read the source with n8n_get_workflow",
     "Switch to staging as its OWN separate call — never batched with the create-on-staging step (parallel-batch order isn't guaranteed, so a batched create could run against prod)",
     "Re-verify current == staging with n8n_instances({mode:\"list\"}) before creating, because the create is what makes the copy permanent",

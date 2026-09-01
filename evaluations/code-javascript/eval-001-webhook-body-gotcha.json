@@ -1,9 +1,11 @@
 {
   "id": "code-js-001",
-  "skills": ["n8n-code-javascript"],
+  "skills": [
+    "workflow-code"
+  ],
   "query": "I'm getting undefined when trying to access data from my webhook in a Code node. My code is: const name = $json.name; const email = $json.email; Why isn't this working?",
   "expected_behavior": [
-    "Activate n8n-code-javascript skill",
+    "Read references/workflow-code.md",
     "Explain that webhook data is nested under the .body property",
     "Show correct syntax: $json.body.name and $json.body.email",
     "Reference DATA_ACCESS.md for webhook structure details",

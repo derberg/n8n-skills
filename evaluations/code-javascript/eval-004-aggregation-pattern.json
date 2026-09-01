@@ -1,9 +1,11 @@
 {
   "id": "code-js-004",
-  "skills": ["n8n-code-javascript"],
+  "skills": [
+    "workflow-code"
+  ],
   "query": "I need to sum up all the 'amount' values from multiple items in my Code node. How do I access all items and calculate a total?",
   "expected_behavior": [
-    "Activate n8n-code-javascript skill",
+    "Read references/workflow-code.md",
     "Show $input.all() to get all items",
     "Demonstrate reduce() function for summing",
     "Include null handling (item.json.amount || 0)",

@@ -1,6 +1,8 @@
 {
   "id": "mcp-005",
-  "skills": ["n8n-mcp-tools-expert"],
+  "skills": [
+    "workflow-instances"
+  ],
   "query": "I'm using n8n_update_partial_workflow to connect an IF node to two different handlers. How do I specify which branch (true or false) each connection should use?",
   "expected_behavior": [
     "Explains smart parameters for multi-output nodes",

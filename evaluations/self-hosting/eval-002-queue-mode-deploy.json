@@ -1,11 +1,11 @@
 {
   "id": "self-hosting-002",
   "skills": [
-    "n8n-self-hosting"
+    "workflow-self-host"
   ],
   "query": "Deploy n8n in queue mode on my server (root@203.0.113.10) at automation.acme.io — we run a lot of executions and need workers. Timezone Europe/Warsaw.",
   "expected_behavior": [
-    "Activate n8n-self-hosting and proceed in queue mode (user explicitly asked)",
+    "Activate references/workflow-self-host.md and proceed in queue mode (user explicitly asked)",
     "Use the queue template (docker-compose.queue.yml): caddy + postgres + redis + n8n main + n8n-worker replicas",
     "Explain queue architecture: main enqueues, workers execute; Redis = queue; Postgres = shared DB (required — SQLite not supported in queue mode)",
     "Stress that the SAME N8N_ENCRYPTION_KEY must reach main AND every worker (the x-n8n anchor handles it), or workers can't decrypt credentials",

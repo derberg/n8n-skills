@@ -1,6 +1,8 @@
 {
   "id": "pattern-001",
-  "skills": ["n8n-workflow-patterns"],
+  "skills": [
+    "workflow-design"
+  ],
   "query": "I need to build a workflow that receives webhook data and sends it to Slack. What's the best way to structure this?",
   "expected_behavior": [
     "Identifies this as a Webhook Processing pattern",

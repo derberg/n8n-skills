@@ -1,9 +1,11 @@
 {
   "id": "agents-002",
-  "skills": ["n8n-agents"],
+  "skills": [
+    "workflow-agents"
+  ],
   "query": "Incoming support messages need to go down one of three branches based on what they're about: 'billing', 'technical issue', or 'general question'. My plan was to use an AI Agent with a system prompt that classifies the message, then feed its output into a Switch node that routes to the three branches. Is that the right way to do this in n8n, or is there something cleaner?",
   "expected_behavior": [
-    "Activate the n8n-agents skill",
+    "Activate the references/workflow-agents.md skill",
     "Identify Agent + Switch as the anti-pattern for natural-language routing",
     "Recommend the Text Classifier node (@n8n/n8n-nodes-langchain.textClassifier) instead",
     "Explain it is ONE node with N output handles (one per category), with downstream branches wired directly into each output",
